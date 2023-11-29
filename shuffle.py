@@ -9,7 +9,6 @@ Interview question
 #!/usr/bin/python3
 import random
 import sys
-from typing import Callable
 
 def shuffle_string_recursive(string: str) -> str:
     '''
