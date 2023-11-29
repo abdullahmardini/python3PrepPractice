@@ -22,5 +22,5 @@ jobs:
         pip install pytest
         # If you have other dependencies, install them here
     - name: Run pytest
-      run: pytest
+      run: pytest *.py
     # Optional: Steps to upload test results, artifacts, etc.
