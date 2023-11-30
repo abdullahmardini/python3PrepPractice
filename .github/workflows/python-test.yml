@@ -19,8 +19,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        pip install pytest
+        pip install pytest bubble
         # If you have other dependencies, install them here
     - name: Run pytest
-      run: pytest *.py
+      run: pytest test*.py
     # Optional: Steps to upload test results, artifacts, etc.

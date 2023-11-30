@@ -77,32 +77,6 @@ def assess_shuffle(og_string: str) -> None:
     print(f'The loop shuffled string is {loop_string}')
     print(f'{x} and {y} characters did not move')
 
-def test_shuffle_recursive():
-    '''
-    input: none
-    return: none
-    test the recursive varient
-    Just a bunch of basic tests to make sure my code has a sembelence of sanity
-    '''
-    string = 'abcd'
-    shuffled = shuffle_string_recursive(string)
-    assert shuffled != string
-    assert len(shuffled) == len(string)
-    assert sorted(shuffled) == sorted(string)
-
-def test_shuffle_loop():
-    '''
-    input: none
-    return: none
-    test the iterative varient
-    Just a bunch of basic tests to make sure my code has a sembelence of sanity
-    '''
-    string = 'abcd'
-    shuffled = shuffle_string_loop(string)
-    assert shuffled != string
-    assert len(shuffled) == len(string)
-    assert sorted(shuffled) == sorted(string)
-
 if __name__=="__main__":
     '''Simple program to shuffle a string.''' # pylint: disable=W0105
     ogString = input("input a string: ")
