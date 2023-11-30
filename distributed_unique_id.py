@@ -11,9 +11,12 @@ We'll see what I can fidangle
 import uuid
 import time
 import os
+import click
 from bottle import route, run
 
-def get_counter() -> int:
+@click.command()
+@click.option('--counter_file', default='counter.txt', help='What counter file should be used.')
+def get_counter(counter_file='counter.txt') -> int:
     '''
     input: None
     return: int
@@ -22,7 +25,6 @@ def get_counter() -> int:
     Should use like redis or something, but the idea is to play with theories,
     not implementations.
     '''
-    counter_file = 'counter.txt'
     if not os.path.exists(counter_file):
         with open(counter_file, 'w', encoding='utf-8') as f:
             f.write('0')
@@ -55,4 +57,5 @@ def unique_key_generator():
     counter = get_counter()
     return f'{time.time()}.{machine_id}.{counter}'
 
-run(host='localhost', port=9001, debug=True)
+if __name__ == '__main__':
+    run(host='localhost', port=9001, debug=True)
