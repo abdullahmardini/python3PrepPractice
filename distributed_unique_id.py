@@ -10,30 +10,31 @@ We'll see what I can fidangle
 #!/usr/bin/python3
 import uuid
 import time
-import os
-import click
 from bottle import route, run
 
-@click.command()
-@click.option('--counter_file', default='counter.txt', help='What counter file should be used.')
-def get_counter(counter_file='counter.txt') -> int:
+class CounterGenerator:
     '''
-    input: None
-    return: int
-    Returns some kind of counter. This needs to be unique per, and has to always increment.
-    This is actually a bad idea right here because it creates an unnessary write bottle neck.
-    Should use like redis or something, but the idea is to play with theories,
-    not implementations.
+    Class to keep track of and return the counter. Overall, the UID needs to be unique overall, but given that it's composed of time + machineid + counster, the counter
+    just needs to be unique per a given epoch time. Unless a user can manipulate the
+    flow of time, but that's a different problem.
     '''
-    if not os.path.exists(counter_file):
-        with open(counter_file, 'w', encoding='utf-8') as f:
-            f.write('0')
-    with open(counter_file, 'r+', encoding='utf-8') as f:
-        counter_value = int(f.read())
-        f.seek(0)
-        f.write(str(counter_value + 1))
-        f.truncate()
-    return counter_value
+    def __init__(self):
+        self.time_counter = 0
+        self.counter_value= 0
+
+    def get_counter(self, time_now: int) -> int:
+        '''
+        input: int
+        return: int
+        Returns some kind of counter.
+        '''
+        if self.time_counter == time_now:
+            self.counter_value += 1
+        else: # new epoch time
+            self.time_counter = time_now
+            self.counter_value = 0
+
+        return self.counter_value
 
 
 def get_machine_id() -> str:
@@ -53,9 +54,11 @@ def unique_key_generator():
     returns a unique key consisting of
     time + machine id + counter
     '''
+    generator = CounterGenerator()
+    time_now = time.time()
     machine_id = get_machine_id()
-    counter = get_counter()
-    return f'{time.time()}.{machine_id}.{counter}'
+    counter = generator.get_counter(time_now)
+    return f'{time_now}.{machine_id}.{counter}'
 
 if __name__ == '__main__':
     run(host='localhost', port=9001, debug=True)
