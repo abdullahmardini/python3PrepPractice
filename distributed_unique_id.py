@@ -14,7 +14,8 @@ from bottle import route, run
 
 class CounterGenerator:
     '''
-    Class to keep track of and return the counter. Overall, the UID needs to be unique overall, but given that it's composed of time + machineid + counster, the counter
+    Class to keep track of and return the counter. Overall, the UID needs to be unique
+    overall, but given that it's composed of time + machineid + counster, the counter
     just needs to be unique per a given epoch time. Unless a user can manipulate the
     flow of time, but that's a different problem.
     '''
