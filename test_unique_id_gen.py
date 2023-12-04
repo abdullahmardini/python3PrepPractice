@@ -1,8 +1,8 @@
 """
-test_disributed_unique_id.py
+test_unique_id_gen.py
 """
 
-from distributed_unique_id import CounterGenerator
+from unique_id_gen import CounterGenerator
 
 def test_uid_generator():
     '''
@@ -44,4 +44,3 @@ def test_get_counter_restarts():
     generator.get_counter(100)
     next_count = generator.get_counter(101)
     assert next_count == 0
-
