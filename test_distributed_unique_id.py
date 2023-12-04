@@ -2,16 +2,16 @@
 test_disributed_unique_id.py
 """
 
-import pytest
-import distributed_unique_id as uid
+from distributed_unique_id import CounterGenerator
 
 def test_uid_generator():
     '''
-    test that time is actually going up
+    test that time is actually going up and the counter
     '''
-    uid1 = uid.unique_key_generator()
-    uid2 = uid.unique_key_generator()
-    uid3 = uid.unique_key_generator()
+    generator = CounterGenerator()
+    uid1 = generator.get_uid()
+    uid2 = generator.get_uid()
+    uid3 = generator.get_uid()
 
     assert uid1 < uid2
     assert uid2 < uid3
@@ -20,25 +20,27 @@ def test_get_machine_id():
     '''
     test machine id function
     '''
-    machine_id = uid.get_machine_id()
+    generator = CounterGenerator()
+    machine_id = generator.get_machine_id()
     assert isinstance(machine_id, str)
-    machine_id_2 = uid.get_machine_id()
+    machine_id_2 = generator.get_machine_id()
     assert machine_id == machine_id_2
 
 def test_get_counter_increments():
     '''
     test counter, ensure it increments
     '''
-    generator = uid.CounterGenerator()
+    generator = CounterGenerator()
     initial_count = generator.get_counter(100)
     next_count = generator.get_counter(100)
+    assert initial_count == type(int)
     assert next_count == initial_count + 1
 
 def test_get_counter_restarts():
     '''
     test counter, ensure it restarts on different time
     '''
-    generator = uid.CounterGenerator()
+    generator = CounterGenerator()
     generator.get_counter(100)
     next_count = generator.get_counter(101)
     assert next_count == 0

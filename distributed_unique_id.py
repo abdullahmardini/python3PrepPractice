@@ -37,15 +37,34 @@ class CounterGenerator:
 
         return self.counter_value
 
+    def get_machine_id(self) -> str:
+        '''
+        input: None
+        return: str
+        Basically needs to be something unique to the machine.
+        Really simple function, but maybe needs to be something more complicated in the future.
+        '''
+        return str(uuid.getnode())
 
-def get_machine_id() -> str:
-    '''
-    input: None
-    return: str
-    Basically needs to be something unique to the machine.
-    Really simple function, but maybe needs to be something more complicated in the future.
-    '''
-    return str(uuid.getnode())
+    def get_epoch_time(self) -> int:
+        '''
+        input: None
+        return: str
+        Just gives you default python time
+        '''
+        return time.time()
+
+    def get_uid(self) -> str:
+        '''
+        input: None
+        return: str
+        Put it all together. Keep the logic separate so that it's
+        easier to refactor down the line.
+        '''
+        time_now = self.get_epoch_time()
+        machine_id =  self.get_machine_id()
+        count = self.get_counter(time_now)
+        return f'{time_now}.{machine_id}.{count}'
 
 @route('/ukg')
 def unique_key_generator():
@@ -56,10 +75,7 @@ def unique_key_generator():
     time + machine id + counter
     '''
     generator = CounterGenerator()
-    time_now = time.time()
-    machine_id = get_machine_id()
-    counter = generator.get_counter(time_now)
-    return f'{time_now}.{machine_id}.{counter}'
+    return generator.get_uid()
 
 if __name__ == '__main__':
     run(host='localhost', port=9001, debug=True)
