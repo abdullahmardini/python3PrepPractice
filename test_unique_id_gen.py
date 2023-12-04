@@ -33,7 +33,6 @@ def test_get_counter_increments():
     generator = CounterGenerator()
     initial_count = generator.get_counter(100)
     next_count = generator.get_counter(100)
-    assert initial_count == type(int)
     assert next_count == initial_count + 1
 
 def test_get_counter_restarts():
