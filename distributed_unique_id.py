@@ -9,6 +9,7 @@ We'll see what I can fidangle
 """
 #!/usr/bin/python3
 from bottle import route, run
+from unique_id_gen import CounterGenerator
 
 @route('/ukg')
 def unique_key_generator():
