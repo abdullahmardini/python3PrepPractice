@@ -11,36 +11,60 @@ def longest_palindrome(s: str) -> str:
 
     This is not Manacher's algorithm. But if you understand the gist of it, you're about 75% of the way there.
     '''
-    # Add '|' to every string, to make them all odd.
-    # 'aba' becomes 'a|b|a' (3->5), 'abba' becomes 'a|b|b|a' (4->7)
+
     if s == '':
         return ''
 
+    # Add '|' to every string, to make them all odd.
+    # 'aba' becomes 'a|b|a' (3->5), 'abba' becomes 'a|b|b|a' (4->7)
     mod_s = '#'.join(s)
 
-    center = 0
+    center = radius = 0
     pal_rad = [0 for _ in enumerate(mod_s)]
 
     while center < len(mod_s):
         radius = 0
-        while center - (radius + 1) >= 0 and \
+        # The wikipedia explanation does a better job, but you should know
+        # negative indexing is a thing in python
+        while center < len(mod_s) and \
+            center - (radius + 1) >= 0 and \
             center + (radius + 1) < len(mod_s) and \
             mod_s[center - (radius + 1)] == mod_s[center + (radius + 1)]:
                 radius +=1
         pal_rad[center] = radius
+        old_center = center
+        old_radius = radius
         center +=1
 
+        radius = 0
+        # if our new center lies inside a palindrome, then we can re-use
+        # some already computed data
+        while center <= old_center + old_radius:
+            mirrored_center = old_center - (center - old_center)
+            max_mirrored_radius = old_center + old_radius - center
+
+            if pal_rad[mirrored_center] < max_mirrored_radius:
+                pal_rad[center] = pal_rad[mirrored_center]
+                center += 1
+            elif pal_rad[mirrored_center] > max_mirrored_radius:
+                pal_rad[center] = max_mirrored_radius
+                center += 1
+            else:
+                radius = max_mirrored_radius
+                break
+
+    # So say you have bcc. That becomes b#c#c, and the longest there are
+    # #c# and c#c -> c and cc. So you need the second answer.
+    # But then say you have ccb. That becomes c#c#b, and then your answers
+    # are c#c and #c# -> cc and c. So you need the first answer.
+    # So just compile every possible longest palindrome, take out our char.
     max_r = max(pal_rad)
     max_c = [x for x, r in enumerate(pal_rad) if r == max_r]
     strings = []
 
-
     for x in max_c:
         strings.append(mod_s[x-max_r:x+max_r+1].replace('#', ''))
 
-    print(mod_s)
-    print(pal_rad)
-    print(strings)
     return(max(strings, key=len))
 
 
