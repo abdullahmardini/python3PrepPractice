@@ -1,4 +1,4 @@
-def lengthOfLongestSubstring(s: str) -> int:
+def length_of_longest_substring(s: str) -> int:
     '''
     longest substring without repeating characters problem from leet
     The idea to create a sliding window, and track the length of the longest
