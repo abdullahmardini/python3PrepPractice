@@ -12,8 +12,8 @@ def longest_palindrome(s: str) -> str:
     This is not Manacher's algorithm. But if you understand the gist of it, you're about 75% of the way there.
     '''
 
-    if s == '':
-        return ''
+    if len(s) <= 1:
+        return s
 
     # Add '|' to every string, to make them all odd.
     # 'aba' becomes 'a|b|a' (3->5), 'abba' becomes 'a|b|b|a' (4->7)
