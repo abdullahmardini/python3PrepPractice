@@ -1,4 +1,11 @@
-def twoSum(nums: list, target: int) -> list:
+'''
+2sum, 3sum, etc
+leetcode problem
+you know, it's probably possible to make a real nsum function that just keeps calling itself
+chatgpt hlp plz
+'''
+
+def two_sum(nums: list, target: int) -> list:
     '''
     The idea is to create a map, where I use the number
     as the key, and the index of the list as value. Then
@@ -15,12 +22,16 @@ def twoSum(nums: list, target: int) -> list:
     return []
 
 
-def threeSum(nums: list) -> list:
+def three_sum(nums: list) -> list:
+    '''
+    Going to try to reduce the problem to a 2sum problem.
+    also lol
+    '''
     target = 0
     pairs = []
     for i, num in enumerate(nums):
         remainder = target - num
-        pair = twoSum(nums[:i]+nums[i+1:], target-remainder)
+        pair = two_sum(nums[:i]+nums[i+1:], target-remainder)
 
         if pair:
             pairs += [[num] + pair]
