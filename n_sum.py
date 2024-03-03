@@ -10,6 +10,7 @@ def two_sum(nums: list, target: int) -> list:
     The idea is to create a map, where I use the number
     as the key, and the index of the list as value. Then
     I check if the difference is already stored in my map.
+    returns: list of indexes
     '''
     num_map = {}
     for i, num in enumerate(nums):
@@ -26,13 +27,20 @@ def three_sum(nums: list) -> list:
     '''
     Going to try to reduce the problem to a 2sum problem.
     also lol
+    returns: list of list of values
     '''
     target = 0
     pairs = []
     for i, num in enumerate(nums):
         remainder = target - num
-        pair = two_sum(nums[:i]+nums[i+1:], target-remainder)
+        tmp_list = nums[:i]+nums[i+1:]
+        pair_idx = two_sum(nums[:i]+nums[i+1:], target-remainder)
+        pair = [tmp_list[x] for x in pair_idx]
 
         if pair:
             pairs += [[num] + pair]
     return pairs
+
+if __name__=='__main__':
+    numbs = [0,0,0]
+    print(three_sum(numbs))
